@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaborUPC · Sistema de diseño</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    /* Esta página se pinta con los mismos tokens que publica:
+       si algo se ve mal, el problema está en tokens.css. */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sabor-fuente, Arial, sans-serif);
+      background: var(--sabor-color-fondo, #f4f6f8);
+      color: var(--sabor-color-texto, #222);
+    }
+    .cab {
+      background: var(--sabor-color-primario, #0b4f8a);
+      color: #fff;
+      padding: var(--sabor-espacio-l, 24px) var(--sabor-espacio-l, 24px);
+    }
+    .cab h1 { margin: 0 0 4px; font-size: 24px; }
+    .cab p { margin: 0; font-size: 14px; opacity: .85; }
+    main { max-width: 900px; margin: 0 auto; padding: var(--sabor-espacio-l, 24px); }
+    h2 {
+      font-size: 15px; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--sabor-color-primario, #0b4f8a);
+      border-bottom: 1px solid #dde3ea; padding-bottom: 6px; margin: 32px 0 16px;
+    }
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .tarjeta {
+      background: #fff; border: 1px solid #dde3ea;
+      border-radius: var(--sabor-radio, 4px); overflow: hidden;
+    }
+    .muestra { height: 64px; }
+    .datos { padding: var(--sabor-espacio-s, 8px) var(--sabor-espacio-m, 16px); }
+    .nombre {
+      font-family: Consolas, "Courier New", monospace; font-size: 12px;
+      color: var(--sabor-color-secundario, #1b7a3e); word-break: break-all;
+    }
+    .valor {
+      font-family: Consolas, "Courier New", monospace; font-size: 13px;
+      margin-top: 4px; color: var(--sabor-color-texto, #222);
+    }
+    .codigo {
+      background: #1e1e1e; color: #d8f0d8; padding: var(--sabor-espacio-m, 16px);
+      border-radius: var(--sabor-radio, 4px); font-family: Consolas, "Courier New", monospace;
+      font-size: 13px; overflow-x: auto;
+    }
+    .tipografia { background: #fff; border: 1px solid #dde3ea; border-radius: var(--sabor-radio, 4px); padding: var(--sabor-espacio-m, 16px); }
+    .fila { display: flex; align-items: center; gap: var(--sabor-espacio-m, 16px); padding: 6px 0; border-bottom: 1px dashed #e3e7ec; }
+    .fila:last-child { border-bottom: 0; }
+    .barra { background: var(--sabor-color-acento, #f2c200); height: 22px; border-radius: 2px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; }
+    .chip { display: flex; align-items: center; justify-content: center; height: 64px; color: #fff; font-size: 12px; }
+    .pie { text-align: center; font-size: 12px; padding: var(--sabor-espacio-l, 24px); opacity: .7; }
+  </style>
+</head>
+<body>
+  <header class="cab">
+    <h1>SaborUPC · Sistema de diseño</h1>
+    <p>Variable CSS compartidas por el contenedor y los 4 micro frontends · puerto 8085</p>
+  </header>
+
+  <main>
+    <h2>Colores</h2>
+    <div class="rejilla" id="lista-colores"></div>
+
+    <h2>Tipografía</h2>
+    <div class="tipografia" id="tipografia"></div>
+
+    <h2>Espaciado</h2>
+    <div class="tipografia" id="espaciado"></div>
+
+    <h2>Radios</h2>
+    <div class="chips" id="radios"></div>
+
+    <h2>Cómo se consumen</h2>
+    <div class="codigo">&lt;link rel="stylesheet" href="http://localhost:8085/tokens.css"&gt;<br>
+<br>
+/* siempre con respaldo, para que la app no se rompa si el 8085 se cae */<br>
+.boton {<br>
+&nbsp;&nbsp;background: var(--sabor-color-primario, #0b4f8a);<br>
+&nbsp;&nbsp;color: #fff;<br>
+&nbsp;&nbsp;padding: var(--sabor-espacio-s, 8px) var(--sabor-espacio-m, 16px);<br>
+&nbsp;&nbsp;border-radius: var(--sabor-radio, 4px);<br>
+}</div>
+  </main>
+
+  <footer class="pie">tokens.css · solo UI, nada de lógica de negocio</footer>
+
+  <script>
+    // Muestra el valor que el navegador está usando realmente por cada token.
+    (function () {
+      const estilos = getComputedStyle(document.documentElement);
+      function valor(nombre) {
+        return estilos.getPropertyValue(nombre).trim();
+      }
+      function tarjeta(nombre, color) {
+        return '<div class="tarjeta">' +
+                 '<div class="muestra" style="background:' + color + '"></div>' +
+                 '<div class="datos">' +
+                   '<div class="nombre">' + nombre + '</div>' +
+                   '<div class="valor">' + valor(nombre) + '</div>' +
+                 '</div>' +
+               '</div>';
+      }
+
+      const colores = [
+        '--sabor-color-primario', '--sabor-color-secundario', '--sabor-color-acento',
+        '--sabor-color-fondo', '--sabor-color-texto', '--sabor-color-error'
+      ];
+      document.getElementById('lista-colores').innerHTML =
+        colores.map(function (n) { return tarjeta(n, valor(n)); }).join('');
+
+      document.getElementById('tipografia').innerHTML =
+        '<div class="fila"><div class="nombre" style="width:220px">--sabor-fuente</div>' +
+        '<div style="font-family:var(--sabor-fuente, Arial, sans-serif);font-size:22px">SaborUPC · Ḃahía 3000</div></div>';
+
+      ['--sabor-espacio-s', '--sabor-espacio-m', '--sabor-espacio-l'].forEach(function (n) {
+        const v = valor(n);
+        document.getElementById('espaciado').insertAdjacentHTML('beforeend',
+          '<div class="fila"><div class="nombre" style="width:220px">' + n + '</div>' +
+          '<div class="barra" style="width:' + v + '"></div>' +
+          '<div class="valor">' + v + '</div></div>');
+      });
+
+      const r = valor('--sabor-radio');
+      document.getElementById('radios').innerHTML =
+        '<div class="chip" style="background:var(--sabor-color-primario,#0b4f8a);border-radius:' + r + '">' +
+          '--sabor-radio: ' + r + '</div>';
+    })();
+  </script>
+</body>
+</html>

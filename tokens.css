@@ -1,0 +1,39 @@
+/* =====================================================================
+   SaborUPC · Sistema de diseño (tokens)
+   ---------------------------------------------------------------------
+   Este archivo es el ÚNICO origen de la UI de SaborUPC.
+   Se sirve desde su propio dominio/puerto y lo consumen el contenedor
+   y todos los micro frontends:
+
+       <link rel="stylesheet" href="http://localhost:8085/tokens.css">
+
+   Solo UI: aquí no hay lógica de negocio ni reglas de componentes.
+   Quien lo consume debe siempre poner un respaldo, para que la
+   aplicación se vea bien aunque este origen esté caído:
+
+       color: var(--sabor-color-primario, #0b4f8a);
+
+   Contrato compartido (INSTRUCCIONES-EQUIPO.md). Si agregas una variable
+   nueva, avisa al grupo antes: los tres equipos consumen este archivo.
+   ===================================================================== */
+
+:root {
+  /* --- Colores ------------------------------------------------------ */
+  --sabor-color-primario:   #0b4f8a;  /* azul institucional: cabecera, botones */
+  --sabor-color-secundario: #1b7a3e;  /* verde: carrito, confirmaciones */
+  --sabor-color-acento:     #f2c200;  /* amarillo: insignias y contadores */
+  --sabor-color-fondo:      #f4f6f8;  /* gris claro: fondo de página */
+  --sabor-color-texto:      #222222;  /* texto principal sobre fondo claro */
+  --sabor-color-error:      #a12a1e;  /* rojo: errores y mensajes de fallo */
+
+  /* --- Tipografía ---------------------------------------------------- */
+  --sabor-fuente: Arial, Helvetica, sans-serif;
+
+  /* --- Espaciado (escala corta: s = 8px, m = 16px, l = 24px) --------- */
+  --sabor-espacio-s: 8px;
+  --sabor-espacio-m: 16px;
+  --sabor-espacio-l: 24px;
+
+  /* --- Forma --------------------------------------------------------- */
+  --sabor-radio: 4px;
+}
